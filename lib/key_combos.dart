@@ -3,8 +3,10 @@
 library;
 
 import 'package:flutter/services.dart';
-
 import 'package:keyboard_scaffold/consts.dart';
+
+// consts for external use for easy short name use
+export 'package:keyboard_scaffold/consts.dart';
 
 /// Callback type for key events
 typedef KeyCallback = void Function();

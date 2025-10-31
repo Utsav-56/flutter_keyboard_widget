@@ -1,4 +1,3 @@
-import 'package:meta/meta.dart';
 import 'package:flutter/gestures.dart' show DragStartBehavior;
 import 'package:flutter/material.dart';
 import 'package:keyboard_scaffold/key_maps.dart' show KeyMaps;
