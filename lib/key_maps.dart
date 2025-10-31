@@ -68,7 +68,7 @@ class KeyMaps {
       if (_isModifier(key)) {
         _modifiersPressed.add(key);
       } else {
-        final wasPressed = !_pressed.add(key);
+        final _ = !_pressed.add(key);
         final combo = _comboMap[_normalizedModifierKey()];
         final cb = combo?.bindings[key];
         if (cb != null) cb();
