@@ -102,10 +102,50 @@ class KeyMaps {
   }
 
   /// Generates a key based on modifiers to put in hashmap for easy retrieval
+  /// Normalizes ctrl/alt variants to their base keys
   String _keyFor(List<LogicalKeyboardKey> modifiers) {
-    final sorted = modifiers.map((k) => k.keyLabel ?? k.debugName ?? k.keyId.toString()).toList()
+    final normalized = <LogicalKeyboardKey>[];
+
+    for (final mod in modifiers) {
+      // Normalize left/right variants to base keys
+      if (mod == ctrlLeftKey || mod == ctrlRightKey) {
+        if (!normalized.contains(ctrlKey)) {
+          normalized.add(ctrlKey);
+        }
+      } else if (mod == altLeftKey || mod == altRightKey) {
+        if (!normalized.contains(altKey)) {
+          normalized.add(altKey);
+        }
+      } else {
+        normalized.add(mod);
+      }
+    }
+
+    final sorted = normalized.map((k) => k.keyLabel ?? k.debugName ?? k.keyId.toString()).toList()
       ..sort();
     return sorted.join('+');
+  }
+
+  /// Normalize the currently pressed modifiers for lookup
+  String _normalizedModifierKey() {
+    final normalized = <LogicalKeyboardKey>[];
+
+    for (final mod in _modifiersPressed) {
+      // Normalize left/right variants to base keys
+      if (mod == ctrlLeftKey || mod == ctrlRightKey) {
+        if (!normalized.contains(ctrlKey)) {
+          normalized.add(ctrlKey);
+        }
+      } else if (mod == altLeftKey || mod == altRightKey) {
+        if (!normalized.contains(altKey)) {
+          normalized.add(altKey);
+        }
+      } else {
+        normalized.add(mod);
+      }
+    }
+
+    return _keyFor(normalized);
   }
 
   bool isModifier(LogicalKeyboardKey key) {
@@ -139,30 +179,33 @@ class KeyMaps {
     final key = event.logicalKey;
 
     if (event is KeyDownEvent) {
-      if (isAlreadyPressed(key)) {
-        print("KeyMaps: Key ${key.debugName} is already pressed, ignoring repeated event");
-        return;
-      }
-
       if (isModifier(key)) {
-        _modifiersPressed.add(key);
-
-        if (_modifiersPressed.length > 1) {
+        // Always add modifiers, even if already pressed (for repeat prevention)
+        if (!_modifiersPressed.contains(key)) {
+          _modifiersPressed.add(key);
           print("KeyMaps: Modifier key ${key.debugName} pressed");
         }
       } else {
+        // For non-modifier keys, allow re-triggering if modifiers are still held
+        final wasAlreadyPressed = _pressed.contains(key);
         _pressed.add(key);
 
-        // Get key for current modifiers (could be empty string if no modifiers)
-        final keyForModifiers = _keyFor(_modifiersPressed.toList());
+        // Get normalized key for current modifiers (could be empty string if no modifiers)
+        final keyForModifiers = _normalizedModifierKey();
         final combo = _comboMap[keyForModifiers];
 
         if (combo != null) {
           // Check if the combo has a binding for the triggered key
           if (combo.hasBindingFor(key)) {
-            print(
-              "KeyMaps: Combo found for modifiers [$keyForModifiers], triggering key: ${key.debugName}",
-            );
+            if (wasAlreadyPressed) {
+              print(
+                "KeyMaps: Re-triggering combo for modifiers [$keyForModifiers], key: ${key.debugName}",
+              );
+            } else {
+              print(
+                "KeyMaps: Combo found for modifiers [$keyForModifiers], triggering key: ${key.debugName}",
+              );
+            }
             combo.handle(key);
           } else {
             print(
@@ -183,8 +226,8 @@ class KeyMaps {
 
     print("""
 New state:
-Modifiers pressed: $_modifiersPressed
-Keys pressed: $_pressed
+Modifiers pressed: ${_modifiersPressed.map((k) => k.debugName).join(', ')}
+Keys pressed: ${_pressed.map((k) => k.debugName).join(', ')}
 """);
   }
 }

@@ -42,9 +42,9 @@ class KeyCombo {
         if (!(pressed.contains(altLeftKey) || pressed.contains(altRightKey))) {
           return false;
         }
+      } else {
+        if (!pressed.contains(mod)) return false;
       }
-
-      if (!pressed.contains(mod)) return false;
     }
     return true;
   }
