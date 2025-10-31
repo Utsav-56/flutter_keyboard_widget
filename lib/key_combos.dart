@@ -15,6 +15,7 @@ class KeyCombo {
 
   KeyCombo({this.modifiers = const [], required this.bindings}) {
     if (!areSupportedModifierKeys(modifiers)) {
+      // areSupportedModifierKeys from consts.dart
       throw ArgumentError(
         "KeyCombo: Unsupported modifier key found in modifiers list: ${modifiers.map((k) => k.debugName).join(', ')}",
       );
@@ -62,5 +63,11 @@ class KeyCombo {
   /// Check if this combo has a binding for the given key
   bool hasBindingFor(LogicalKeyboardKey key) {
     return bindings.containsKey(key);
+  }
+
+  /// Returns a unique identifier string for this combo based on its modifiers
+  /// Used for mapping and lookup
+  String get identifier {
+    return KeyName.forKeys(modifiers);
   }
 }

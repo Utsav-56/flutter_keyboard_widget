@@ -249,6 +249,45 @@ class KeyName {
   }
 
   static String forKeys(List<LogicalKeyboardKey> keys) {
-    return keys.map((k) => forKey(k)).join('+');
+    return keys.map((k) => normalisedKeyName(k)).join('+');
+  }
+
+  static bool isKeyEqual(LogicalKeyboardKey a, LogicalKeyboardKey b) {
+    if (a == ctrlKey && (b == ctrlLeftKey || b == ctrlRightKey)) return true;
+    if (a == altKey && (b == altLeftKey || b == altRightKey)) return true;
+    if (a == shiftKey && (b == shiftLeftKey || b == shiftRightKey)) return true;
+
+    if (b == ctrlKey && (a == ctrlLeftKey || a == ctrlRightKey)) return true;
+    if (b == altKey && (a == altLeftKey || a == altRightKey)) return true;
+    if (b == shiftKey && (a == shiftLeftKey || a == shiftRightKey)) return true;
+
+    return a.keyId == b.keyId;
+  }
+
+  static areKeysEqual(List<LogicalKeyboardKey> a, List<LogicalKeyboardKey> b) {
+    if (a.length != b.length) return false;
+    for (final keyA in a) {
+      bool found = false;
+      for (final keyB in b) {
+        if (isKeyEqual(keyA, keyB)) {
+          found = true;
+          break;
+        }
+      }
+      if (!found) return false;
+    }
+    return true;
+  }
+
+  static String normalisedKeyName(LogicalKeyboardKey key) {
+    // resolve alias for ctrl and alt keys to handle left/right variants
+
+    if (key == ctrlKey) {
+      return '${forKey(ctrlRightKey)}/${forKey(ctrlLeftKey)}';
+    } else if (key == altKey) {
+      return '${forKey(altRightKey)}/${forKey(altLeftKey)}';
+    } else {
+      return forKey(key);
+    }
   }
 }
