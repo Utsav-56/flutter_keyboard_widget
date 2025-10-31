@@ -3,7 +3,6 @@ description: "A new Flutter package project."
 version: 1.0.0
 homepage: https://github.com/Utsav-56/flutter_keyboard_widget
 repository: https://github.com/Utsav-56/flutter_keyboard_widget
-publish_to: https://pub.dev
 
 authors:
     - Utsav Pokharel
