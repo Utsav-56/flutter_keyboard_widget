@@ -1,5 +1,5 @@
 name: keyboard_scaffold
-description: "A new Flutter package project."
+description: "A Flutter package to handle keyboard shortcuts with ease."
 version: 1.0.0
 homepage: https://github.com/Utsav-56/flutter_keyboard_widget
 repository: https://github.com/Utsav-56/flutter_keyboard_widget
