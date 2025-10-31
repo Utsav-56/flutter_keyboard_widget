@@ -1,3 +1,4 @@
+import 'package:meta/meta.dart';
 import 'package:flutter/gestures.dart' show DragStartBehavior;
 import 'package:flutter/material.dart';
 import 'package:keyboard_scaffold/key_maps.dart' show KeyMaps;
@@ -8,7 +9,8 @@ export 'package:keyboard_scaffold/consts.dart';
 
 export 'package:keyboard_scaffold/keyboard_scaffold.dart' show KeyboardScaffold;
 
-class KeyboardScaffold extends StatefulWidget {
+@immutable
+final class KeyboardScaffold extends StatefulWidget {
   const KeyboardScaffold({
     super.key,
     this.keyMaps,

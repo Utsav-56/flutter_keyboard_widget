@@ -155,3 +155,100 @@ LogicalKeyboardKey key(String char) {
   }
   throw ArgumentError('Unsupported key "$char"');
 }
+
+/// class to hold key names
+///
+/// keynames are readable string constants for keys
+class KeyName {
+  static final names = {
+    ctrlKey: 'Control',
+    ctrlLeftKey: 'Control L',
+    ctrlRightKey: 'Control R',
+
+    altKey: 'Alt',
+    altLeftKey: 'Alt L',
+    altRightKey: 'Alt R',
+
+    shiftKey: 'Shift',
+    shiftLeftKey: 'Shift L',
+    shiftRightKey: 'Shift R',
+
+    metaKey: 'Meta',
+
+    escKey: 'Escape',
+    tabKey: 'Tab',
+    enterKey: 'Enter',
+    backspaceKey: 'Backspace',
+    spaceKey: 'Space',
+    homeKey: 'Home',
+    endKey: 'End',
+    pageUpKey: 'Page Up',
+    pageDownKey: 'Page Down',
+    insKey: 'Insert',
+    delKey: 'Delete',
+
+    upKey: 'Arrow Up',
+    downKey: 'Arrow Down',
+    leftKey: 'Arrow Left',
+    rightKey: 'Arrow Right',
+
+    f1: 'F1',
+    f2: 'F2',
+    f3: 'F3',
+    f4: 'F4',
+    f5: 'F5',
+    f6: 'F6',
+    f7: 'F7',
+    f8: 'F8',
+    f9: 'F9',
+    f10: 'F10',
+    f11: 'F11',
+    f12: 'F12',
+
+    keyA: 'A',
+    keyB: 'B',
+    keyC: 'C',
+    keyD: 'D',
+    keyE: 'E',
+    keyF: 'F',
+    keyG: 'G',
+    keyH: 'H',
+    keyI: 'I',
+    keyJ: 'J',
+    keyK: 'K',
+    keyL: 'L',
+    keyM: 'M',
+    keyN: 'N',
+    keyO: 'O',
+    keyP: 'P',
+    keyQ: 'Q',
+    keyR: 'R',
+    keyS: 'S',
+    keyT: 'T',
+    keyU: 'U',
+    keyV: 'V',
+    keyW: 'W',
+    keyX: 'X',
+    keyY: 'Y',
+    keyZ: 'Z',
+
+    key0: '0',
+    key1: '1',
+    key2: '2',
+    key3: '3',
+    key4: '4',
+    key5: '5',
+    key6: '6',
+    key7: '7',
+    key8: '8',
+    key9: '9',
+  };
+
+  static String forKey(LogicalKeyboardKey key) {
+    return names[key] ?? key.debugName ?? 'Unknown Key';
+  }
+
+  static String forKeys(List<LogicalKeyboardKey> keys) {
+    return keys.map((k) => forKey(k)).join('+');
+  }
+}

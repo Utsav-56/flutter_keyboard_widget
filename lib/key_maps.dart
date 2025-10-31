@@ -17,8 +17,8 @@ class KeyMaps {
     for (int i = 0; i < combos.length; i++) {
       final combo = combos[i];
       print(
-        "KeyMaps: Combo $i - Modifiers: [${combo.modifiers.map((k) => k.debugName).join(', ')}], "
-        "Bindings: [${combo.bindings.keys.map((k) => k.debugName).join(', ')}]",
+        "KeyMaps: Combo $i - Modifiers: [${KeyName.forKeys(combo.modifiers)}], "
+        "Bindings: [${KeyName.forKeys(combo.bindings.keys.toList())}]",
       );
 
       print("\n\n");
